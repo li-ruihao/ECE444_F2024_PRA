@@ -1,5 +1,7 @@
 from flask import Flask, render_template
-from flask_bootstrap import Bootstrap, Moment
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
+import datetime
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -8,7 +10,7 @@ moment = Moment(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', current_time=datetime.datetime.now(datetime.timezone.utc), refresh=True)
 
 
 @app.route('/user/<name>')
@@ -26,8 +28,5 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 
-import sys
-
 if __name__ == '__main__':
-    print(sys.executable)
     app.run()
