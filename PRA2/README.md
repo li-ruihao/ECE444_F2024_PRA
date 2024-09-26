@@ -1,5 +1,8 @@
 # Note
-this repo is a clone of https://github.com/miguelgrinberg/flasky. 
+this repo is a clone of https://github.com/miguelgrinberg/flasky.
+
+Activity 1.4:
+![img.png](img.png)
 
 Flasky
 ======
