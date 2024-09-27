@@ -30,7 +30,7 @@ def index():
         if old_email is not None and old_email != new_email:
             flash('Looks like you have changed your email!')
 
-        if new_email.find("utoronto") != -1:
+        if new_email.find('@mail.utoronto.ca') != -1:
             session['email'] = new_email
         else:
             session['email'] = "Please use your UofT email."
