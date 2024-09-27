@@ -1,0 +1,5 @@
+services:  
+  PRA2:
+    image: ece444_pra2
+    ports:
+      - "5000:5000"

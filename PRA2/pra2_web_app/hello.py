@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, EmailField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -58,4 +58,4 @@ def internal_server_error(e):
 
 if __name__ == '__main__':
     app.config['SECRET_KEY'] = 'hard to guess string'
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
