@@ -1,0 +1,10 @@
+#idea settings for projects
+/PRA1/flaskr-tdd/.idea/
+/PRA2/flaskr-tdd/.idea/
+/PRA3/flaskr-tdd/.idea/
+
+#venv
+/PRA3/flaskr-tdd/venv/
+
+#pyc files
+*.pyc
