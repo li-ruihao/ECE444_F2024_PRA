@@ -86,3 +86,40 @@ def test_delete_message(client):
     rv = client.get("/delete/1")
     data = json.loads(rv.data)
     assert data["status"] == 1
+
+
+def test_search(client):
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+
+    client.post(
+        "/add",
+        data=dict(title="GGWP", text="ggwp"),
+        follow_redirects=True,
+    )
+
+    rv = client.get("/search/?query=GGWP")
+    assert rv.status_code == 200
+    assert b"GGWP" and b"ggwp" in rv.data
+
+    rv = client.get("/search/?query=invalidEntry")
+    assert rv.status_code == 200
+    assert b"invalidEntry" not in rv.data
+
+
+def test_login_required(client):
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+
+    client.post(
+        "/add",
+        data=dict(title="GGWP", text="ggwp"),
+        follow_redirects=True,
+    )
+
+    logout(client)
+    rv = client.get("/delete/1")
+    assert rv.status_code == 401
+
+    login(client, app.config["USERNAME"], app.config["PASSWORD"])
+    rv2 = client.get("/delete/1")
+    assert rv2.status_code == 200
+
