@@ -1,7 +1,9 @@
 #idea settings for projects
-/PRA1/flaskr-tdd/.idea/
-/PRA2/flaskr-tdd/.idea/
-/PRA3/flaskr-tdd/.idea/
+/PRA1/flaskr-tdd/.idea/*
+/PRA2/flaskr-tdd/.idea/*
+/PRA3/flaskr-tdd/.idea/*
+/PRA3/*.idea
+/PRA5/.idea/
 
 #venv
 /PRA3/flaskr-tdd/venv/
