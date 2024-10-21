@@ -130,6 +130,6 @@ def test_latency_performance():
         return 'Failed to write perf and latency data', 400
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     app.config["BASE_DIR"] = Path(__file__).resolve().parent
     app.run(port=5000, debug=True)
