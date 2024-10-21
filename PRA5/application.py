@@ -10,17 +10,17 @@ import pickle
 import json
 import matplotlib.pyplot as plt
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
 def load_model():
     ###### model loading #####
     loaded_model = None
-    with open(app.config["BASE_DIR"].joinpath('basic_classifier.pkl'), 'rb') as fid:
+    with open(application.config["BASE_DIR"].joinpath('basic_classifier.pkl'), 'rb') as fid:
         loaded_model = pickle.load(fid)
 
     vectorizer = None
-    with open(app.config["BASE_DIR"].joinpath('count_vectorizer.pkl'), 'rb') as vd:
+    with open(application.config["BASE_DIR"].joinpath('count_vectorizer.pkl'), 'rb') as vd:
         vectorizer = pickle.load(vd)
     ###################
 
@@ -32,12 +32,12 @@ def load_model():
     return loaded_model, vectorizer
 
 
-@app.route('/')
+@application.route('/')
 def index():
     return "Your Flask App Works! PRA5!"
 
 
-@app.route('/predict', methods=['POST'])
+@application.route('/predict', methods=['POST'])
 def perdict_news():
     news_content = request.form['content']
 
@@ -51,9 +51,9 @@ def perdict_news():
     }), 200
 
 
-@app.route('/test_latency_performance', methods=['GET'])
+@application.route('/test_latency_performance', methods=['GET'])
 def test_latency_performance():
-    test_client = app.test_client()
+    test_client = application.test_client()
 
     #column 1 is the test name and number
     #column 2 is the content to be predicted
@@ -131,5 +131,5 @@ def test_latency_performance():
 
 
 if __name__ == '__main__':
-    app.config["BASE_DIR"] = Path(__file__).resolve().parent
-    app.run(port=5000, debug=True)
+    application.config["BASE_DIR"] = Path(__file__).resolve().parent
+    application.run(port=5000, debug=True)

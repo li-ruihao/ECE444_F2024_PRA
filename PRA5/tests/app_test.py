@@ -5,15 +5,15 @@ import json
 import time
 
 from pathlib import Path
-from application import app
+from application import application
 
 
 @pytest.fixture
 def client():
-    app.config["TESTING"] = True
-    app.config["BASE_DIR"] = Path(__file__).resolve().parent.parent
+    application.config["TESTING"] = True
+    application.config["BASE_DIR"] = Path(__file__).resolve().parent.parent
 
-    yield app.test_client()
+    yield application.test_client()
 
 
 def test_index(client):
