@@ -8,6 +8,7 @@ from pathlib import Path
 import csv
 import pickle
 import json
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -59,6 +60,7 @@ def test_latency_performance():
     #column 3 is the prediction result
     #column 4 is the time elapsed
     latency_performance_data = [['Tests', 'Content', 'Result', 'Time']]
+    boxplot_data = []
 
     for i in range(100):
         content = "A goat can fly to the moon"
@@ -71,6 +73,7 @@ def test_latency_performance():
 
         timed_data = ["Fake Test 1", f'content: {content}', "FAKE", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
+        boxplot_data.append(elapsed_time)
 
     for i in range(100):
         content = "Earth's water ran out since 2023"
@@ -83,6 +86,7 @@ def test_latency_performance():
 
         timed_data = ["Fake Test 2", f'content: {content}', "FAKE", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
+        boxplot_data.append(elapsed_time)
 
     for i in range(100):
         content = "Lin Dan won olympics in the badminton category in years 2008 and 2012"
@@ -95,6 +99,7 @@ def test_latency_performance():
 
         timed_data = ["Real Test 1", f'content: {content}', "REAL", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
+        boxplot_data.append(elapsed_time)
 
     for i in range(100):
         content = "Michael Phelps became a multiple time olympic winner today!"
@@ -107,11 +112,17 @@ def test_latency_performance():
 
         timed_data = ["Real Test 2", f'content: {content}', "REAL", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
+        boxplot_data.append(elapsed_time)
 
     try:
         with open('perf_latency_output.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(latency_performance_data)
+
+        plt.title("Boxplot of time data for REST API calls")
+        plt.ylabel("Time Values")
+        plt.boxplot(boxplot_data)
+        plt.savefig("time_boxplot.png")
 
         return (f'perf_latency_output.csv wrote successfully, there are {len(latency_performance_data)} rows '
                 f'in total'), 200
