@@ -65,7 +65,7 @@ def test_perf_latency(client):
     rv = client.get('/test_latency_performance', content_type="html/text")
 
     assert rv.status_code == 200
-    assert b'perf_latency_output.csv wrote successfully, there are 401 rows in total' in rv.data
+    assert b'perf_latency_output.csv wrote successfully, there are 402 rows in total' in rv.data
 
 
 def test_download_perf_files(client):

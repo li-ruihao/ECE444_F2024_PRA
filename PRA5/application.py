@@ -71,6 +71,8 @@ def test_latency_performance():
     latency_performance_data = [['Tests', 'Content', 'Result', 'Time']]
     boxplot_data = []
 
+    total_time = 0
+
     for i in range(100):
         content = "A goat can fly to the moon"
         start_time = time.time()
@@ -79,6 +81,7 @@ def test_latency_performance():
             data=dict(content=content)
         )
         elapsed_time = time.time() - start_time
+        total_time += elapsed_time
 
         timed_data = ["Fake Test 1", f'content: {content}', "FAKE", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
@@ -92,6 +95,7 @@ def test_latency_performance():
             data=dict(content=content)
         )
         elapsed_time = time.time() - start_time
+        total_time += elapsed_time
 
         timed_data = ["Fake Test 2", f'content: {content}', "FAKE", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
@@ -105,6 +109,7 @@ def test_latency_performance():
             data=dict(content=content)
         )
         elapsed_time = time.time() - start_time
+        total_time += elapsed_time
 
         timed_data = ["Real Test 1", f'content: {content}', "REAL", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
@@ -118,10 +123,15 @@ def test_latency_performance():
             data=dict(content=content)
         )
         elapsed_time = time.time() - start_time
+        total_time += elapsed_time
 
         timed_data = ["Real Test 2", f'content: {content}', "REAL", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
         boxplot_data.append(elapsed_time)
+
+    avg_time = total_time / 400
+    latency_performance_data.append([f'Average performance time: {avg_time:.6f}'])
+    boxplot_data.append(avg_time)
 
     try:
         with open(perf_latency_output, mode='w', newline='') as file:
