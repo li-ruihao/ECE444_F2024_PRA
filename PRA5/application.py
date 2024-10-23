@@ -1,6 +1,8 @@
+import io
 import time
+import zipfile
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, send_file
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from pathlib import Path
@@ -11,6 +13,13 @@ import json
 import matplotlib.pyplot as plt
 
 application = Flask(__name__)
+
+application.config["BASE_DIR"] = Path(__file__).resolve().parent
+perf_latency_output = 'perf_latency_output.csv'
+time_boxplot = 'time_boxplot.png'
+
+perf_latency_output_path = application.config["BASE_DIR"].joinpath(perf_latency_output)
+time_boxplot_path = application.config["BASE_DIR"].joinpath(time_boxplot)
 
 
 def load_model():
@@ -34,7 +43,7 @@ def load_model():
 
 @application.route('/')
 def index():
-    return "Your Flask App Works! PRA5!"
+    return render_template('index.html'), 200
 
 
 @application.route('/predict', methods=['POST'])
@@ -115,14 +124,14 @@ def test_latency_performance():
         boxplot_data.append(elapsed_time)
 
     try:
-        with open('perf_latency_output.csv', mode='w', newline='') as file:
+        with open(perf_latency_output, mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(latency_performance_data)
 
         plt.title("Boxplot of time data for REST API calls")
         plt.ylabel("Time Values")
         plt.boxplot(boxplot_data)
-        plt.savefig("time_boxplot.png")
+        plt.savefig(time_boxplot)
 
         return (f'perf_latency_output.csv wrote successfully, there are {len(latency_performance_data)} rows '
                 f'in total'), 200
@@ -130,6 +139,23 @@ def test_latency_performance():
         return 'Failed to write perf and latency data', 400
 
 
+@application.route('/download_perf_files', methods=['GET'])
+def download_perf_files():
+    zip_buffer = io.BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        zip_file.write(perf_latency_output_path, perf_latency_output)
+        zip_file.write(time_boxplot_path, time_boxplot)
+
+    zip_buffer.seek(0)
+
+    return send_file(
+        zip_buffer,
+        mimetype='application/zip',
+        as_attachment=True,
+        attachment_filename='data.zip'
+    ), 200
+
+
 if __name__ == '__main__':
-    application.config["BASE_DIR"] = Path(__file__).resolve().parent
     application.run(port=5000, debug=True)

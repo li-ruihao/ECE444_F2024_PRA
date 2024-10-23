@@ -18,9 +18,7 @@ def client():
 
 def test_index(client):
     response = client.get("/", content_type="html/text")
-
     assert response.status_code == 200
-    assert response.data == b"Your Flask App Works! PRA5!"
 
 
 def test_fake_news_one(client):
@@ -68,3 +66,9 @@ def test_perf_latency(client):
 
     assert rv.status_code == 200
     assert b'perf_latency_output.csv wrote successfully, there are 401 rows in total' in rv.data
+
+
+def test_download_perf_files(client):
+    rv = client.get('/download_perf_files', content_type="html/text")
+
+    assert rv.status_code == 200
