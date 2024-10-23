@@ -14,13 +14,6 @@ import matplotlib.pyplot as plt
 
 application = Flask(__name__)
 
-application.config["BASE_DIR"] = Path(__file__).resolve().parent
-perf_latency_output = 'perf_latency_output.csv'
-time_boxplot = 'time_boxplot.png'
-
-perf_latency_output_path = application.config["BASE_DIR"].joinpath(perf_latency_output)
-time_boxplot_path = application.config["BASE_DIR"].joinpath(time_boxplot)
-
 
 def load_model():
     ###### model loading #####
@@ -134,14 +127,14 @@ def test_latency_performance():
     boxplot_data.append(avg_time)
 
     try:
-        with open(perf_latency_output, mode='w', newline='') as file:
+        with open('perf_latency_output.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(latency_performance_data)
 
         plt.title("Boxplot of time data for REST API calls")
         plt.ylabel("Time Values")
         plt.boxplot(boxplot_data)
-        plt.savefig(time_boxplot)
+        plt.savefig('time_boxplot.png')
 
         return (f'perf_latency_output.csv wrote successfully, there are {len(latency_performance_data)} rows '
                 f'in total'), 200
@@ -154,8 +147,8 @@ def download_perf_files():
     zip_buffer = io.BytesIO()
 
     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-        zip_file.write(perf_latency_output_path, perf_latency_output)
-        zip_file.write(time_boxplot_path, time_boxplot)
+        zip_file.write(application.config["BASE_DIR"].joinpath('perf_latency_output.csv'), 'perf_latency_output.csv')
+        zip_file.write(application.config["BASE_DIR"].joinpath('time_boxplot.png'), 'time_boxplot.png')
 
     zip_buffer.seek(0)
 
@@ -168,4 +161,5 @@ def download_perf_files():
 
 
 if __name__ == '__main__':
+    application.config["BASE_DIR"] = Path(__file__).resolve().parent
     application.run(port=5000, debug=True)
