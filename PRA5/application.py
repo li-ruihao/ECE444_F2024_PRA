@@ -73,6 +73,7 @@ def test_latency_performance():
 
     total_time = 0
 
+    boxplot_data_set1 = []
     for i in range(100):
         content = "A goat can fly to the moon"
         start_time = time.time()
@@ -85,8 +86,10 @@ def test_latency_performance():
 
         timed_data = ["Fake Test 1", f'content: {content}', "FAKE", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
-        boxplot_data.append(elapsed_time)
+        boxplot_data_set1.append(elapsed_time)
+    boxplot_data.append(boxplot_data_set1)
 
+    boxplot_data_set2 = []
     for i in range(100):
         content = "Earth's water ran out since 2023"
         start_time = time.time()
@@ -99,8 +102,10 @@ def test_latency_performance():
 
         timed_data = ["Fake Test 2", f'content: {content}', "FAKE", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
-        boxplot_data.append(elapsed_time)
+        boxplot_data_set2.append(elapsed_time)
+    boxplot_data.append(boxplot_data_set2)
 
+    boxplot_data_set3 = []
     for i in range(100):
         content = "Lin Dan won olympics in the badminton category in years 2008 and 2012"
         start_time = time.time()
@@ -113,8 +118,10 @@ def test_latency_performance():
 
         timed_data = ["Real Test 1", f'content: {content}', "REAL", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
-        boxplot_data.append(elapsed_time)
+        boxplot_data_set3.append(elapsed_time)
+    boxplot_data.append(boxplot_data_set3)
 
+    boxplot_data_set4 = []
     for i in range(100):
         content = "Michael Phelps became a multiple time olympic winner today!"
         start_time = time.time()
@@ -127,11 +134,12 @@ def test_latency_performance():
 
         timed_data = ["Real Test 2", f'content: {content}', "REAL", f'REST call Time: {elapsed_time:.6f} seconds']
         latency_performance_data.append(timed_data)
-        boxplot_data.append(elapsed_time)
+        boxplot_data_set4.append(elapsed_time)
+    boxplot_data.append(boxplot_data_set4)
 
     avg_time = total_time / 400
     latency_performance_data.append([f'Average performance time: {avg_time:.6f}'])
-    boxplot_data.append(avg_time)
+    boxplot_data.append([avg_time])
 
     try:
         with open(perf_latency_output, mode='w', newline='') as file:
